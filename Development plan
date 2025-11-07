@@ -1,0 +1,184 @@
+AI Travel Itinerary Generator — Comprehensive Development Plan
+1. PRD Analysis Summary
+The AI Travel Itinerary Generator provides an intelligent way for users to generate detailed, day-by-day travel itineraries using AI (OpenAI API) and real-world data (Google Places API). The MVP targets frequent travelers, students, and professionals who want quick itinerary generation without manually searching multiple platforms.
+Key MVP features include:
+AI Itinerary Generation (destination + duration input)
+Map Integration (Google Maps with daily pins)
+Basic Authentication (JWT / Guest Mode)
+Itinerary CRUD (Create, View, Edit, Delete)
+Multilingual interface (English for MVP)
+
+2. Technology Stack
+Frontend
+Framework: Next.js (v15.x)
+UI Library: shadcn/ui
+Language: TypeScript
+Styling: Tailwind CSS
+State Management: React Context API
+API Communication: Axios / Fetch
+Map Integration: Google Maps JavaScript API
+Backend
+Language: Python (v3.12.x)
+Framework: FastAPI (v0.116.x)
+Runtime: Uvicorn (ASGI server)
+Authentication: JWT via python-jose
+Data Validation: Pydantic v2.x
+Environment Management: python-dotenv
+Database
+DBaaS: MongoDB Atlas (Free Tier)
+ODM: Motor / PyMongo
+Collections: users, itineraries, dayplans
+External Integrations
+OpenAI API: For itinerary content generation
+Google Places API: For verifying points of interest & map pinning
+
+3. Architecture Decision
+Chosen Pattern: Modular Monolith
+Justification:
+Moderate complexity level (CRUD + API integrations)
+Single developer team → faster development cycle
+Easier local debugging, lighter DevOps footprint
+Enables both frontend and backend to operate independently during development
+Structure Overview: Frontend (Next.js) ↔ FastAPI Backend ↔ MongoDB Atlas
+Both share common modular REST API structure in /api/v1/...
+
+4. Domain-Driven Module Design
+Frontend Modules
+Auth Module: Register/Login screen + token management
+Itinerary Module: Creation flow, daily plan display, itinerary list
+Map Module: Google Maps rendering (per-day visualization)
+Shared Components: NavBar, Footer, Theme selector
+Backend Modules
+User Module: Manages /auth routes, security, user CRUD
+Itinerary Module: /itineraries CRUD endpoints
+AI Integration Module: Connects OpenAI API for content generation
+Map Module: Calls Google Places API for coordinates
+Database Module: Connection setup and collection access
+Shared Utilities: Token management, error handling, logging
+
+5. THE SPRINT PLAN
+Sprint 0: Groundwork & Scaffolding
+Goal: Establish full-stack skeleton with bi-directional communication and verified MongoDB connection.
+Tasks
+Repository Synchronization
+USER INPUT REQUIRED
+WHY: Setup version control
+FORMAT: https://github.com/[username]/ai-travel-itinerary.git
+ACTION: Clone locally
+Environment Configuration
+USER INPUT REQUIRED: MongoDB connection string
+.env → DATABASE_URL, OPENAI_API_KEY, GOOGLE_API_KEY
+Project Structure Creation
+Create root /frontend and /backend directories, and .gitignore
+Backend Setup (FastAPI)
+Dependencies: fastapi, uvicorn, python-dotenv, motor, pydantic, python-jose
+Frontend Setup (Next.js)
+Scaffold npx create-next-app@latest frontend --ts
+Install tailwindcss, integrate shadcn/ui
+Documentation
+Write base README.md with folder structure and run instructions
+Health Check Verification
+Backend /api/v1/health → {"status":"ok"} (tests MongoDB)
+Frontend /health → shows “Status: ok”
+USER INPUT REQUIRED: Confirm both layers respond correctly
+Branch, Commit & Deployment
+Branch: sprint-0
+Commit Message:
+chore(sprint-0): initialized Next.js + FastAPI project setup
+Deploy Frontend: Vercel (preview URL)
+Deploy Backend: Render (service URL)
+USER INPUT REQUIRED: Confirm both URLs accessible
+
+Sprint 1: Core User Identity & Authentication
+Goal: Enable secure user registration, login, and token-protected endpoints.
+Tasks
+Database Model: Create User schema
+Backend Registration Logic
+/api/v1/auth/register
+USER INPUT REQUIRED: Test with Postman
+Backend Login Logic
+/api/v1/auth/login
+USER INPUT REQUIRED: Verify valid/invalid login
+Backend Protected Route
+/api/v1/users/me with JWT header validation
+USER INPUT REQUIRED: Test with valid and no token
+Frontend UI & State
+Login & Register pages using shadcn/ui
+React Context for token
+USER INPUT REQUIRED: Check responsiveness
+Frontend End-to-End Flow
+Full register-login-profile journey
+USER INPUT REQUIRED: Confirm full flow works
+Branch, Commit & Deployment
+Branch: sprint-1
+Commit Message:
+feat(sprint-1): implemented JWT user authentication flow
+Deploy both to Vercel/Render and confirm URLs work
+
+6. Deployment Strategy
+Frontend: Vercel
+Connect to GitHub repo
+Environment variables via dashboard
+Preview URLs for each sprint branch
+Backend: Render
+Auto deploy from GitHub branch
+Configure DATABASE_URL, OPENAI_API_KEY, GOOGLE_API_KEY
+User Confirmations:
+Verify deployed URLs in each sprint
+Confirm health check/feature operability in production environment
+
+7. USER INPUT PROTOCOL
+Phase
+Required Input
+WHY
+FORMAT
+ACTION
+Sprint 0
+GitHub Repo URL
+For version control
+Full HTTPS Git URL
+Sync + push initial code
+Sprint 0
+MongoDB URI
+Enables DB connections
+Correct URI format
+Paste in .env
+Sprint 0
+Testing confirmation
+Backend/frontend check
+Confirm “Status: ok”
+Reply to verify
+Sprint 1+
+Feature tests
+End-to-end verification
+Acknowledge test results
+Approve next sprint
+
+
+8. Commit & Deployment Validation
+Commit Pattern:
+feat(sprint-X): [summary of feature work]
+Each commit must include sprint accomplishments and align with expected structure, including URLs and validation commands.
+Deployment Validation:
+Confirm branch deployments on both Vercel & Render.
+Ensure API availability, and frontend fetches data in production.
+
+9. Testing Protocol
+Manual Tests Each Sprint:
+Local run validation
+Deployment test on both platforms
+End-to-end (E2E) auth tests (register, login, map load)
+Confirmation received before PR approval
+
+10. Validation Checklist
+✅ PRD Analysis Complete
+✅ Stack & Versions Confirmed
+✅ Modular Monolith Chosen
+✅ Module Design Mapped
+✅ Sprint 0 → Full Stack Setup
+✅ Sprint 1 → Auth Implementation
+✅ Commit & Deployment Process Defined
+✅ User Input Format Clear
+✅ Manual Testing Required Each Sprint
+
+
