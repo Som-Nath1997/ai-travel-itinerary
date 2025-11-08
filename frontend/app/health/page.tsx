@@ -13,7 +13,10 @@ export default function HealthPage() {
     loading: true,
   });
 
+  const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
+    setMounted(true);
     const checkBackendHealth = async () => {
       try {
         const backendUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
@@ -35,6 +38,31 @@ export default function HealthPage() {
 
     checkBackendHealth();
   }, []);
+
+  // Prevent hydration mismatch by only rendering dynamic content after mount
+  if (!mounted) {
+    return (
+      <main className="flex min-h-screen flex-col items-center justify-center p-24">
+        <div className="z-10 max-w-5xl w-full items-center justify-center font-mono text-sm">
+          <h1 className="text-4xl font-bold text-center mb-8">Health Check</h1>
+          <div className="space-y-4">
+            <div className="p-4 border rounded">
+              <p className="text-lg">
+                <strong>Frontend Status:</strong>{" "}
+                <span className="text-green-600">OK</span>
+              </p>
+            </div>
+            <div className="p-4 border rounded">
+              <p className="text-lg">
+                <strong>Backend Status:</strong>{" "}
+                <span className="text-gray-600">Loading...</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-24">
