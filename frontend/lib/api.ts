@@ -72,6 +72,7 @@ export interface Itinerary {
   start_date?: string;
   end_date?: string;
   budget?: string;
+  preferences?: string;
   day_plans: DayPlan[];
   created_at: string;
   updated_at: string;
