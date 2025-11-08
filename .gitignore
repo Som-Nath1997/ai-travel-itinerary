@@ -4,6 +4,14 @@
 .env*.local
 .env.backup.secure
 
+# Documentation files (not needed in production)
+*.md
+!README.md
+
+# Keep deployment configuration files
+!render.yaml
+!vercel.json
+
 # Python
 __pycache__/
 *.py[cod]

@@ -67,10 +67,18 @@ export default function ProfilePage() {
             )}
 
             <div className="mt-6 pt-6 border-t border-gray-200">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Account Actions</h2>
-              <div className="space-y-2">
+              <h2 className="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
+              <div className="space-y-4">
+                <div className="flex gap-4">
+                  <Link href="/itineraries/create">
+                    <Button variant="primary">Create New Itinerary</Button>
+                  </Link>
+                  <Link href="/itineraries">
+                    <Button variant="outline">View My Itineraries</Button>
+                  </Link>
+                </div>
                 <p className="text-sm text-gray-600">
-                  Your account is set up and ready to use. You can now create travel itineraries!
+                  Your account is set up and ready to use. Create your first AI-powered travel itinerary!
                 </p>
               </div>
             </div>

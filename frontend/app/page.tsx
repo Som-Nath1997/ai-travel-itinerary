@@ -24,8 +24,11 @@ export default function Home() {
                 Welcome back, {user?.name || user?.email}!
               </p>
               <div className="flex gap-4 justify-center">
-                <Link href="/profile">
-                  <Button variant="primary">Go to Profile</Button>
+                <Link href="/itineraries">
+                  <Button variant="primary">My Itineraries</Button>
+                </Link>
+                <Link href="/itineraries/create">
+                  <Button variant="outline">Create New Itinerary</Button>
                 </Link>
               </div>
             </div>

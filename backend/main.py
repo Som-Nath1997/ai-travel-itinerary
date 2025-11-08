@@ -6,7 +6,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from contextlib import asynccontextmanager
 from urllib.parse import quote_plus
 
-from routers import auth, users
+from routers import auth, users, itineraries
 
 # Load environment variables
 load_dotenv()
@@ -92,10 +92,18 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# CORS middleware
+# CORS middleware - supports both development and production
+cors_origins = os.getenv("CORS_ORIGINS", "*").split(",")
+if cors_origins == ["*"]:
+    # Development mode - allow all origins
+    cors_origins = ["*"]
+else:
+    # Production mode - specific origins
+    cors_origins = [origin.strip() for origin in cors_origins]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, specify frontend URL
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -104,6 +112,7 @@ app.add_middleware(
 # Include routers
 app.include_router(auth.router)
 app.include_router(users.router)
+app.include_router(itineraries.router)
 
 
 @app.get("/api/v1/health")

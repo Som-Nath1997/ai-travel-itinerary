@@ -49,6 +49,53 @@ export interface User {
   created_at?: string;
 }
 
+export interface Location {
+  name: string;
+  lat?: number | null;  // Optional - may be null if place not found
+  lng?: number | null;  // Optional - may be null if place not found
+  rating?: number;
+  type?: string;
+  place_id?: string;
+}
+
+export interface DayPlan {
+  day_number: number;
+  description: string;
+  locations: Location[];
+}
+
+export interface Itinerary {
+  id: string;
+  user_id: string;
+  destination: string;
+  duration: number;
+  start_date?: string;
+  end_date?: string;
+  budget?: string;
+  day_plans: DayPlan[];
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ItineraryListItem {
+  id: string;
+  destination: string;
+  duration: number;
+  start_date?: string;
+  end_date?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ItineraryCreateData {
+  destination: string;
+  duration: number;
+  start_date?: string;
+  end_date?: string;
+  budget?: string;
+  preferences?: string;
+}
+
 export const authApi = {
   register: async (data: RegisterData): Promise<AuthResponse> => {
     const response = await api.post<AuthResponse>('/api/v1/auth/register', data);
@@ -65,4 +112,36 @@ export const authApi = {
     return response.data;
   },
 };
+
+export const itineraryApi = {
+  generate: async (data: ItineraryCreateData): Promise<Itinerary> => {
+    const response = await api.post<Itinerary>('/api/v1/itineraries/generate', data);
+    return response.data;
+  },
+
+  getById: async (id: string): Promise<Itinerary> => {
+    const response = await api.get<Itinerary>(`/api/v1/itineraries/${id}`);
+    return response.data;
+  },
+
+  list: async (): Promise<ItineraryListItem[]> => {
+    const response = await api.get<ItineraryListItem[]>('/api/v1/itineraries');
+    return response.data;
+  },
+  update: async (id: string, data: ItineraryUpdateData): Promise<Itinerary> => {
+    const response = await api.put<Itinerary>(`/api/v1/itineraries/${id}`, data);
+    return response.data;
+  },
+  delete: async (id: string): Promise<void> => {
+    await api.delete(`/api/v1/itineraries/${id}`);
+  },
+};
+
+export interface ItineraryUpdateData {
+  destination?: string;
+  start_date?: string;
+  end_date?: string;
+  budget?: string;
+  preferences?: string;
+}
 

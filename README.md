@@ -1,60 +1,36 @@
 # AI Travel Itinerary Generator
 
-A web-based application that generates personalized, day-by-day travel plans using AI (OpenAI API) and real-world data (Google Places API).
+A full-stack web application that generates personalized travel itineraries using AI (Google Gemini/OpenAI) and Google Places API.
 
-## Project Structure
+## Features
 
-```
-PRD/
-├── frontend/          # Next.js frontend application
-│   ├── app/          # Next.js app directory
-│   ├── components/   # React components
-│   ├── lib/          # Utility functions
-│   └── public/       # Static assets
-├── backend/          # FastAPI backend application
-│   ├── main.py       # FastAPI application entry point
-│   └── requirements.txt
-├── Development plan  # Development plan document
-└── Refined prd       # Product requirements document
-```
+- 🤖 AI-powered itinerary generation based on destination, budget, days, and preferences
+- 🗺️ Interactive Google Maps integration with location pins
+- 👤 User authentication with JWT
+- ✏️ Full CRUD operations for itineraries
+- 💰 Budget-aware suggestions
+- 📱 Responsive design
 
-## Technology Stack
-
-### Frontend
-- **Framework**: Next.js (v15.x)
-- **UI Library**: shadcn/ui (to be integrated)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **State Management**: React Context API
-- **API Communication**: Axios
+## Tech Stack
 
 ### Backend
-- **Language**: Python (v3.12.x)
-- **Framework**: FastAPI (v0.116.x)
-- **Runtime**: Uvicorn (ASGI server)
-- **Authentication**: JWT via python-jose
-- **Data Validation**: Pydantic v2.x
+- FastAPI (Python 3.12)
+- MongoDB Atlas
+- Google Gemini API (free) / OpenAI API
+- Google Places API
+- JWT Authentication
 
-### Database
-- **DBaaS**: MongoDB Atlas (Free Tier)
-- **ODM**: Motor / PyMongo
-
-### External Integrations
-- **OpenAI API**: For itinerary content generation
-- **Google Places API**: For verifying points of interest & map pinning
+### Frontend
+- Next.js 15 (TypeScript)
+- Tailwind CSS
+- Google Maps JavaScript API
+- React Context API
 
 ## Quick Start
 
-### Prerequisites
-- Node.js (v18 or higher)
-- Python (v3.12.x)
-- MongoDB Atlas account (or local MongoDB)
-- OpenAI API key
-- Google Places API key
-
 ### Backend Setup
 
-1. Navigate to backend directory:
+1. Navigate to backend:
 ```bash
 cd backend
 ```
@@ -72,24 +48,22 @@ pip install -r requirements.txt
 
 4. Create `.env` file:
 ```bash
-# Copy the example and fill in your values
-DATABASE_URL=mongodb+srv://username:password@cluster.mongodb.net/dbname?retryWrites=true&w=majority
-OPENAI_API_KEY=your_openai_api_key_here
-GOOGLE_API_KEY=your_google_api_key_here
-SECRET_KEY=your_secret_key_for_jwt_here
+DATABASE_URL=mongodb+srv://username:password@cluster.mongodb.net/dbname
+GOOGLE_GEMINI_API_KEY=your_gemini_api_key
+GOOGLE_API_KEY=your_google_places_api_key
+SECRET_KEY=your_jwt_secret_key
 ALGORITHM=HS256
+CORS_ORIGINS=http://localhost:3000
 ```
 
-5. Run the server:
+5. Run server:
 ```bash
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
+uvicorn main:app --reload
 ```
-
-Backend will be available at `http://localhost:8000`
 
 ### Frontend Setup
 
-1. Navigate to frontend directory:
+1. Navigate to frontend:
 ```bash
 cd frontend
 ```
@@ -102,80 +76,51 @@ npm install
 3. Create `.env.local` file:
 ```bash
 NEXT_PUBLIC_API_URL=http://localhost:8000
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_google_maps_api_key
 ```
 
-4. Run the development server:
+4. Run development server:
 ```bash
 npm run dev
 ```
 
-Frontend will be available at `http://localhost:3000`
-
-## Health Check
-
-### Backend Health Check
-```bash
-curl http://localhost:8000/api/v1/health
-```
-
-Expected response:
-```json
-{
-  "status": "ok",
-  "database": "connected",
-  "message": "Backend and database are operational"
-}
-```
-
-### Frontend Health Check
-Visit `http://localhost:3000/health` in your browser to see the status of both frontend and backend.
-
-## API Documentation
-
-Once the backend is running, you can access:
-- **Swagger UI**: `http://localhost:8000/docs`
-- **ReDoc**: `http://localhost:8000/redoc`
-
-## Development Status
-
-### Sprint 0: Groundwork & Scaffolding ✅
-- [x] Project structure created
-- [x] Backend setup (FastAPI)
-- [x] Frontend setup (Next.js)
-- [x] Health check endpoints
-- [x] Basic documentation
-
-### Sprint 1: Core User Identity & Authentication (Next)
-- [ ] User registration
-- [ ] User login
-- [ ] JWT authentication
-- [ ] Protected routes
-
 ## Deployment
 
-### Frontend: Vercel
-- Connect to GitHub repository
-- Configure environment variables
-- Auto-deploy on push
+### Backend (Render)
 
-### Backend: Render
-- Connect to GitHub repository
-- Configure environment variables (DATABASE_URL, OPENAI_API_KEY, GOOGLE_API_KEY)
-- Auto-deploy on push
+1. Connect your GitHub repository to Render
+2. Create a new Web Service
+3. Set build command: `pip install -r backend/requirements.txt`
+4. Set start command: `cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT`
+5. Add environment variables:
+   - `DATABASE_URL`
+   - `GOOGLE_GEMINI_API_KEY` (or `OPENAI_API_KEY`)
+   - `GOOGLE_API_KEY`
+   - `SECRET_KEY`
+   - `ALGORITHM=HS256`
+   - `CORS_ORIGINS=https://your-frontend.vercel.app`
 
-## Environment Variables
+### Frontend (Vercel)
 
-### Backend (.env)
-- `DATABASE_URL`: MongoDB connection string
-- `OPENAI_API_KEY`: OpenAI API key
-- `GOOGLE_API_KEY`: Google Places API key
-- `SECRET_KEY`: Secret key for JWT token signing
-- `ALGORITHM`: JWT algorithm (default: HS256)
+1. Connect your GitHub repository to Vercel
+2. Set root directory to `frontend`
+3. Add environment variables:
+   - `NEXT_PUBLIC_API_URL=https://your-backend.onrender.com`
+   - `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`
+4. Deploy
 
-### Frontend (.env.local)
-- `NEXT_PUBLIC_API_URL`: Backend API URL
+## API Endpoints
+
+- `POST /api/v1/auth/register` - User registration
+- `POST /api/v1/auth/login` - User login
+- `GET /api/v1/users/me` - Get current user
+- `POST /api/v1/itineraries/generate` - Generate itinerary
+- `GET /api/v1/itineraries` - List itineraries
+- `GET /api/v1/itineraries/{id}` - Get itinerary
+- `PUT /api/v1/itineraries/{id}` - Update itinerary
+- `DELETE /api/v1/itineraries/{id}` - Delete itinerary
+- `GET /api/v1/health` - Health check
 
 ## License
 
-This project is part of the AI Travel Itinerary Generator development plan.
-
+MIT
