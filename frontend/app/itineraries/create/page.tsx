@@ -79,7 +79,7 @@ export default function CreateItineraryPage() {
         <div className="bg-white shadow rounded-lg p-6">
           <h1 className="text-3xl font-bold text-gray-900 mb-6">Create New Itinerary</h1>
           <p className="text-gray-600 mb-6">
-            Enter your destination and preferences, and we'll generate a personalized travel plan using AI.
+            Enter your destination and preferences, and we&apos;ll generate a personalized travel plan using AI.
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-6">

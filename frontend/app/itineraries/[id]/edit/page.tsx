@@ -23,16 +23,6 @@ export default function EditItineraryPage() {
   const { isAuthenticated, loading: authLoading } = useAuth();
   const router = useRouter();
 
-  useEffect(() => {
-    if (!authLoading && !isAuthenticated) {
-      router.push('/login');
-      return;
-    }
-    if (itineraryId) {
-      loadItinerary();
-    }
-  }, [itineraryId, isAuthenticated, authLoading, router]);
-
   const loadItinerary = async () => {
     try {
       setLoading(true);
@@ -49,6 +39,17 @@ export default function EditItineraryPage() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (!authLoading && !isAuthenticated) {
+      router.push('/login');
+      return;
+    }
+    if (itineraryId) {
+      loadItinerary();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [itineraryId, isAuthenticated, authLoading, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

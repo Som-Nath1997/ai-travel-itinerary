@@ -17,16 +17,6 @@ export default function ItineraryDetailPage() {
   const { isAuthenticated, loading: authLoading } = useAuth();
   const router = useRouter();
 
-  useEffect(() => {
-    if (!authLoading) {
-      if (!isAuthenticated) {
-        router.push('/login');
-        return;
-      }
-      loadItinerary();
-    }
-  }, [itineraryId, isAuthenticated, authLoading, router]);
-
   const loadItinerary = async () => {
     try {
       setLoading(true);
@@ -38,6 +28,17 @@ export default function ItineraryDetailPage() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (!authLoading) {
+      if (!isAuthenticated) {
+        router.push('/login');
+        return;
+      }
+      loadItinerary();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [itineraryId, isAuthenticated, authLoading, router]);
 
   if (authLoading || loading) {
     return (
