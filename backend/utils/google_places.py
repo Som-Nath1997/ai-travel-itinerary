@@ -35,8 +35,9 @@ async def search_place(place_name: str, location: str = None) -> Optional[Dict]:
             async with session.get(url, params=params) as response:
                 if response.status == 200:
                     data = await response.json()
+                    api_status = data.get("status")
                     
-                    if data.get("status") == "OK" and data.get("results"):
+                    if api_status == "OK" and data.get("results"):
                         result = data["results"][0]  # Get first result
                         geometry = result.get("geometry", {})
                         location_data = geometry.get("location", {})
@@ -51,7 +52,9 @@ async def search_place(place_name: str, location: str = None) -> Optional[Dict]:
                             "formatted_address": result.get("formatted_address")
                         }
                     else:
-                        # Place not found, return None
+                        # Log the actual API error
+                        error_msg = data.get("error_message", "No error message")
+                        print(f"Google Places API error for '{place_name}': Status={api_status}, Error={error_msg}")
                         return None
                 else:
                     raise Exception(f"Google Places API error: {response.status}")
@@ -59,6 +62,8 @@ async def search_place(place_name: str, location: str = None) -> Optional[Dict]:
     except Exception as e:
         # Log error but don't fail completely
         print(f"Error searching for place '{place_name}': {str(e)}")
+        import traceback
+        traceback.print_exc()
         return None
 
 

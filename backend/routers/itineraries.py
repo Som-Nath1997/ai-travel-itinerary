@@ -147,21 +147,35 @@ async def generate_itinerary(
     except Exception as e:
         error_message = str(e)
         
-        # Check for specific OpenAI errors
-        if "insufficient_quota" in error_message or "429" in error_message:
-            raise HTTPException(
-                status_code=status.HTTP_402_PAYMENT_REQUIRED,
-                detail="OpenAI API quota exceeded. Please check your OpenAI account billing and add credits."
-            )
-        elif "invalid_api_key" in error_message.lower() or "401" in error_message:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="OpenAI API key is invalid. Please check your API key configuration."
-            )
+        # Check for quota/rate limit errors (works for both Gemini and OpenAI)
+        if "insufficient_quota" in error_message or "429" in error_message or "quota" in error_message.lower():
+            service_name = AI_SERVICE
+            if "Gemini" in service_name:
+                raise HTTPException(
+                    status_code=status.HTTP_402_PAYMENT_REQUIRED,
+                    detail="Google Gemini API quota exceeded. Please check your Google Cloud Console billing and API quotas, or wait a few minutes and try again."
+                )
+            else:
+                raise HTTPException(
+                    status_code=status.HTTP_402_PAYMENT_REQUIRED,
+                    detail="OpenAI API quota exceeded. Please check your OpenAI account billing and add credits."
+                )
+        elif "invalid_api_key" in error_message.lower() or "401" in error_message or "api key" in error_message.lower():
+            service_name = AI_SERVICE
+            if "Gemini" in service_name:
+                raise HTTPException(
+                    status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                    detail="Google Gemini API key is invalid. Please check your GOOGLE_GEMINI_API_KEY configuration."
+                )
+            else:
+                raise HTTPException(
+                    status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                    detail="OpenAI API key is invalid. Please check your API key configuration."
+                )
         else:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail=f"Failed to generate itinerary: {error_message}"
+                detail=f"Failed to generate itinerary with {AI_SERVICE}: {error_message}"
             )
 
 
