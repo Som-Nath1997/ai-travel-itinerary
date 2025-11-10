@@ -3,6 +3,7 @@ import "./globals.css";
 import { Providers } from "@/components/Providers";
 import { NavBar } from "@/components/NavBar";
 import { Attribution } from "@/components/Attribution";
+import { FloatingAttribution } from "@/components/FloatingAttribution";
 
 export const metadata: Metadata = {
   title: "AI Travel Itinerary Generator",
@@ -24,6 +25,7 @@ export default function RootLayout({
               {children}
             </main>
             <Attribution />
+            <FloatingAttribution />
           </div>
         </Providers>
       </body>

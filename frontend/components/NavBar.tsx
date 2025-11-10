@@ -12,8 +12,12 @@ export function NavBar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-8">
-            <Link href="/" className="text-xl font-bold text-gray-900">
-              AI Travel Itinerary
+            <Link href="/" className="text-xl font-bold text-gray-900 flex items-center space-x-2">
+              <span>AI Travel Itinerary</span>
+              <span className="hidden sm:inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-gradient-to-r from-blue-500 to-purple-500 text-white animate-pulse">
+                <span className="mr-1">✨</span>
+                by Som
+              </span>
             </Link>
             
             {isAuthenticated && (
