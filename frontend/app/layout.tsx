@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
 import { NavBar } from "@/components/NavBar";
+import { Attribution } from "@/components/Attribution";
 
 export const metadata: Metadata = {
   title: "AI Travel Itinerary Generator",
@@ -17,8 +18,13 @@ export default function RootLayout({
     <html lang="en">
       <body suppressHydrationWarning>
         <Providers>
-          <NavBar />
-          {children}
+          <div className="flex flex-col min-h-screen">
+            <NavBar />
+            <main className="flex-grow">
+              {children}
+            </main>
+            <Attribution />
+          </div>
         </Providers>
       </body>
     </html>
