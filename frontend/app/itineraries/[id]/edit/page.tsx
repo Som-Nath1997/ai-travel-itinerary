@@ -135,7 +135,7 @@ export default function EditItineraryPage() {
               <select
                 value={budget}
                 onChange={(e) => setBudget(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="">Select budget range</option>
                 <option value="budget-friendly">Budget-friendly ($0-50/day)</option>
