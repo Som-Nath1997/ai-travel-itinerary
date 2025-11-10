@@ -53,7 +53,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       localStorage.setItem('token', access_token);
       setToken(access_token);
       setUser(userData);
-      router.push('/profile');
+      router.push('/');
     } catch (error: any) {
       throw new Error(error.response?.data?.detail || 'Login failed');
     }
@@ -67,7 +67,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       localStorage.setItem('token', access_token);
       setToken(access_token);
       setUser(userData);
-      router.push('/profile');
+      router.push('/');
     } catch (error: any) {
       throw new Error(error.response?.data?.detail || 'Registration failed');
     }

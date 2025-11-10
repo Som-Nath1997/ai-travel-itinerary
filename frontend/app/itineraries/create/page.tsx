@@ -68,44 +68,69 @@ export default function CreateItineraryPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-2xl mx-auto">
-        <div className="mb-6">
-          <Link href="/itineraries" className="text-blue-600 hover:text-blue-800">
-            ← Back to Itineraries
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      {/* Animated background */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 right-10 text-6xl opacity-10 animate-float">✈️</div>
+        <div className="absolute bottom-20 left-10 text-5xl opacity-10 animate-float" style={{ animationDelay: '1.5s' }}>🗺️</div>
+        <div className="absolute top-1/2 right-1/4 text-4xl opacity-10 animate-float" style={{ animationDelay: '3s' }}>🧳</div>
+      </div>
+
+      <div className="max-w-2xl mx-auto relative z-10">
+        <div className="mb-6 animate-slide-in-left">
+          <Link href="/itineraries" className="text-blue-600 hover:text-blue-800 flex items-center space-x-2 group">
+            <span className="group-hover:-translate-x-1 transition-transform">←</span>
+            <span>Back to Itineraries</span>
           </Link>
         </div>
 
-        <div className="bg-white shadow rounded-lg p-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-6">Create New Itinerary</h1>
-          <p className="text-gray-600 mb-6">
-            Enter your destination and preferences, and we&apos;ll generate a personalized travel plan using AI.
+        {/* Animated header */}
+        <div className="text-center mb-8 animate-slide-down">
+          <div className="inline-block mb-4">
+            <span className="text-6xl animate-bounce">🌍</span>
+          </div>
+          <h1 className="text-4xl font-extrabold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-3">
+            Create New Itinerary
+          </h1>
+          <p className="text-lg text-gray-700 font-medium">
+            Enter your destination and preferences, and we&apos;ll generate a personalized travel plan using AI ✨
           </p>
+        </div>
+
+        <div className="bg-white/80 backdrop-blur-lg shadow-2xl rounded-2xl p-8 border border-white/50 animate-fade-in-up">
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-                {error}
+              <div className="bg-red-500/20 backdrop-blur-sm border border-red-400 text-red-700 px-4 py-3 rounded-lg animate-shake flex items-center space-x-2">
+                <span>⚠️</span>
+                <span>{error}</span>
               </div>
             )}
 
-            <Input
-              label="Destination *"
-              type="text"
-              value={destination}
-              onChange={(e) => setDestination(e.target.value)}
-              required
-              placeholder="e.g., Paris, France"
-            />
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-gray-700 flex items-center space-x-2">
+                <span className="text-lg">📍</span>
+                <span>Destination *</span>
+              </label>
+              <input
+                type="text"
+                value={destination}
+                onChange={(e) => setDestination(e.target.value)}
+                required
+                placeholder="e.g., Paris, France"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:border-blue-300"
+              />
+            </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Duration (days) *
+              <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center space-x-2">
+                <span className="text-lg">📅</span>
+                <span>Duration (days) *</span>
               </label>
               <select
                 value={duration}
                 onChange={(e) => setDuration(parseInt(e.target.value))}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:border-blue-300"
                 required
               >
                 {Array.from({ length: 14 }, (_, i) => i + 1).map((days) => (
@@ -116,21 +141,28 @@ export default function CreateItineraryPage() {
               </select>
             </div>
 
-            <Input
-              label="Start Date (optional)"
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-            />
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-gray-700 flex items-center space-x-2">
+                <span className="text-lg">🗓️</span>
+                <span>Start Date (optional)</span>
+              </label>
+              <input
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:border-blue-300"
+              />
+            </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Budget (optional)
+              <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center space-x-2">
+                <span className="text-lg">💰</span>
+                <span>Budget (optional)</span>
               </label>
               <select
                 value={budget}
                 onChange={(e) => setBudget(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:border-blue-300"
               >
                 <option value="">Select budget range</option>
                 <option value="budget-friendly">Budget-friendly ($0-50/day)</option>
@@ -145,32 +177,51 @@ export default function CreateItineraryPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Preferences (optional)
+              <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center space-x-2">
+                <span className="text-lg">💭</span>
+                <span>Preferences (optional)</span>
               </label>
               <textarea
                 value={preferences}
                 onChange={(e) => setPreferences(e.target.value)}
                 rows={4}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:border-blue-300 resize-none"
                 placeholder="e.g., Interested in museums, prefer vegetarian restaurants, budget-friendly options"
               />
             </div>
 
-            <div className="flex gap-4">
-              <Button type="submit" variant="primary" isLoading={isLoading} className="flex-1">
-                {isLoading ? 'Generating Itinerary...' : 'Generate Itinerary'}
+            <div className="flex gap-4 pt-4">
+              <Button 
+                type="submit" 
+                variant="primary" 
+                isLoading={isLoading} 
+                className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-3 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300"
+              >
+                {isLoading ? (
+                  <span className="flex items-center justify-center space-x-2">
+                    <span className="animate-spin text-xl">✈️</span>
+                    <span>Generating Itinerary...</span>
+                  </span>
+                ) : (
+                  <span className="flex items-center justify-center space-x-2">
+                    <span className="text-xl">🚀</span>
+                    <span>Generate Itinerary</span>
+                  </span>
+                )}
               </Button>
               <Link href="/itineraries">
-                <Button type="button" variant="outline">
+                <Button type="button" variant="outline" className="px-6">
                   Cancel
                 </Button>
               </Link>
             </div>
 
             {isLoading && (
-              <div className="text-center text-gray-600">
-                <p>This may take a few seconds...</p>
+              <div className="text-center mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200 animate-pulse">
+                <div className="flex items-center justify-center space-x-2 text-blue-700">
+                  <span className="text-2xl animate-spin">⏳</span>
+                  <p className="font-medium">AI is crafting your perfect itinerary... This may take a few seconds</p>
+                </div>
               </div>
             )}
           </form>
